@@ -8,7 +8,7 @@ public class GeneticAlgorithms {
 
 
     public static void main(String[] args) {
-        int populationSize = 250;
+        int populationSize = 150;
         Population population = new Population(populationSize);
                 
         while (!population.isDone()) { 

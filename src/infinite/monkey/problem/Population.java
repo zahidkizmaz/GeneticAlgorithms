@@ -27,7 +27,7 @@ public class Population {
 
         for (DNA dna : pop) {
             double fit = dna.getFitness() * (100 / this.getSuperDNA().getFitness());
-            fit =(int) Math.floor(fit) * 100;
+            fit =(int) Math.floor(fit) ;
             for (int i = 0; i < fit; i++) {
                 matingPool.add(dna);
             }

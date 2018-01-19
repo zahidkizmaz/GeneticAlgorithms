@@ -53,7 +53,7 @@ public class DNA {
     
     public void mutate(){
         for (int i = 0; i < this.genes.length(); i++) {
-            if (rn.nextDouble() <= MUTATE_RATE) {
+            if (rn.nextDouble() < MUTATE_RATE) {
                 this.genes = genes.replace(genes.charAt(i), createRandomChar());
             }
         }
