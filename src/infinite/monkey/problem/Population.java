@@ -7,18 +7,22 @@ import java.util.Random;
 
 
 public class Population {
-    
-    ArrayList<DNA> pop = new ArrayList();
+    Random r = new Random();
+    ArrayList<DNA> pop;
+    ArrayList<DNA> matingPool;
+    private int popSize;
     
     public Population(int size){
-        for (int i = 0; i < size; i++) {
+        popSize = size;
+        pop = new ArrayList();
+        for (int i = 0; i < popSize; i++) {
             pop.add(new DNA(DNA.TARGET.length()));
         }        
     }
     
     public ArrayList<DNA> createMatingPool(){
-        Random r = new Random();
-        ArrayList<DNA> matingPool = new ArrayList();
+
+        matingPool = new ArrayList();
         double maxFitness = 0;
         
         for (DNA dna : pop) {
@@ -28,14 +32,24 @@ public class Population {
         }
         for (DNA dna : pop) {
             double fit = dna.getFitness() * (100 / maxFitness);
-            fit =(int) Math.floor(fit);
+            fit =(int) Math.floor(fit) * 100;
             for (int i = 0; i < fit; i++) {
                 matingPool.add(dna);
             }
         }
-        
         return  matingPool;
     }
             
+    private void generateNewPop(){
+        pop = new ArrayList<>();
+        for (int i = 0; i < popSize; i++) {
+            DNA parent1 = matingPool.get(r.nextInt(matingPool.size()-1));
+            DNA parent2 = matingPool.get(r.nextInt(matingPool.size()-1));
+            DNA child = parent1.crossover(parent2);
+            child.mutate();
+            pop.add(child);
+        }
+        
+    }
     
 }
