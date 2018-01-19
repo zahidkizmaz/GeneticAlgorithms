@@ -11,7 +11,7 @@ public class Population {
     ArrayList<DNA> pop;
     ArrayList<DNA> matingPool;
     private int popSize, genNumber;
-    DNA superDNA;
+    private DNA superDNA;
     
     public Population(int size){
         popSize = size;
@@ -24,16 +24,9 @@ public class Population {
     private ArrayList<DNA> createMatingPool(){
 
         matingPool = new ArrayList();
-        double maxFitness = 0;
-        
+
         for (DNA dna : pop) {
-            if (dna.getFitness() > maxFitness) {
-                maxFitness = dna.getFitness();
-                this.superDNA = dna;
-            }
-        }
-        for (DNA dna : pop) {
-            double fit = dna.getFitness() * (100 / maxFitness);
+            double fit = dna.getFitness() * (100 / this.getSuperDNA().getFitness());
             fit =(int) Math.floor(fit) * 100;
             for (int i = 0; i < fit; i++) {
                 matingPool.add(dna);
@@ -41,7 +34,20 @@ public class Population {
         }
         return  matingPool;
     }
-    
+
+    public DNA getSuperDNA() {
+        double maxFitness = 0.0;
+        DNA max = pop.get(0);
+        for (DNA dna : pop) {
+            if (dna.getFitness() > maxFitness) {
+                maxFitness = dna.getFitness();
+                max = dna;
+            }
+        }
+        this.superDNA = max;
+        return superDNA;
+    }
+       
     public boolean isDone(){
         for (DNA dna : pop) {
             if (dna.isSuper()) {
@@ -71,7 +77,7 @@ public class Population {
         info.append(DNA.TARGET);
         info.append("\n");
         info.append("Best phrase: ");
-        info.append(superDNA);
+        info.append(getSuperDNA());
         info.append("\n");
         info.append("Generation Number: ");
         info.append(genNumber);
@@ -82,7 +88,7 @@ public class Population {
         info.append("Mutation Rate (%): ");
         info.append(DNA.MUTATE_RATE * 100);
         info.append("\n");
-        return  info.toString();
+        return info.toString();
     }
     
        

@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class DNA {
     public static final double MUTATE_RATE = 0.02;
-    public static final String TARGET = "To be or not to be!";
+    public static final String TARGET = "To be or not to be";
     private final Random rn = new Random();
     private String genes;
     
@@ -21,18 +21,19 @@ public class DNA {
     
     private char createRandomChar(){
        
-        int c = rn.nextInt(62) + 60;
+        int c = rn.nextInt(63) + 60;
+        if (c == 63) return (char)32;
         return (char) c;
     }
     
     public double getFitness() {
-        int score = 0;
+        double score = 0;
         for (int i = 0; i < genes.length(); i++) {
             if (genes.charAt(i) == TARGET.charAt(i)) {
-                score++;
+                score +=1.0;
             }
         }
-        return (double)score/TARGET.length();
+        return score/TARGET.length();
     }    
 
     
