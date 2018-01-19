@@ -5,7 +5,7 @@ import java.util.Random;
 
 
 public class DNA {
-    public static final double MUTATE_RATE = 0.1;
+    public static final double MUTATE_RATE = 0.02;
     public static final String TARGET = "To be or not to be!";
     private final Random rn = new Random();
     private String genes;
@@ -58,13 +58,17 @@ public class DNA {
         }
     }
 
+    public boolean isSuper(){
+        return this.getFitness() == 1.0;
+    }
+    
     public void setGenes(String genes) {
         this.genes = genes;
     }
         
     @Override
     public String toString() {
-        return this.genes + "  " + getFitness()*100;
+        return this.genes + " - Fitness:" + getFitness()*100;
     }
     
     

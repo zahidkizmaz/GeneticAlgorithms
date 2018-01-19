@@ -10,7 +10,8 @@ public class Population {
     Random r = new Random();
     ArrayList<DNA> pop;
     ArrayList<DNA> matingPool;
-    private int popSize;
+    private int popSize, genNumber;
+    DNA superDNA;
     
     public Population(int size){
         popSize = size;
@@ -20,7 +21,7 @@ public class Population {
         }        
     }
     
-    public ArrayList<DNA> createMatingPool(){
+    private ArrayList<DNA> createMatingPool(){
 
         matingPool = new ArrayList();
         double maxFitness = 0;
@@ -28,6 +29,7 @@ public class Population {
         for (DNA dna : pop) {
             if (dna.getFitness() > maxFitness) {
                 maxFitness = dna.getFitness();
+                this.superDNA = dna;
             }
         }
         for (DNA dna : pop) {
@@ -39,8 +41,18 @@ public class Population {
         }
         return  matingPool;
     }
+    
+    public boolean isDone(){
+        for (DNA dna : pop) {
+            if (dna.isSuper()) {
+                return true;
+            }
+        }
+        return false;
+    }
             
-    private void generateNewPop(){
+    public void generateNewPop(){
+        createMatingPool();
         pop = new ArrayList<>();
         for (int i = 0; i < popSize; i++) {
             DNA parent1 = matingPool.get(r.nextInt(matingPool.size()-1));
@@ -49,7 +61,29 @@ public class Population {
             child.mutate();
             pop.add(child);
         }
-        
+        genNumber++;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder info = new StringBuilder();
+        info.append("Goal phrase: ");
+        info.append(DNA.TARGET);
+        info.append("\n");
+        info.append("Best phrase: ");
+        info.append(superDNA);
+        info.append("\n");
+        info.append("Generation Number: ");
+        info.append(genNumber);
+        info.append("\n");
+        info.append("Population Number: ");
+        info.append(pop.size());
+        info.append("\n");
+        info.append("Mutation Rate (%): ");
+        info.append(DNA.MUTATE_RATE * 100);
+        info.append("\n");
+        return  info.toString();
     }
     
+       
 }
