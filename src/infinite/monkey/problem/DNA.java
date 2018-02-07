@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class DNA {
     public static final double MUTATE_RATE = 0.02;
-    public static final String TARGET = "To be or not to be";
+    public static final String TARGET = "Lorem ipsum dolor sit amet ";
     private final Random rn = new Random();
     private String genes;
     

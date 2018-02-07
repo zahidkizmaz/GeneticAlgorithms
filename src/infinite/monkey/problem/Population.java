@@ -2,6 +2,7 @@
 package infinite.monkey.problem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 
@@ -21,13 +22,25 @@ public class Population {
         }        
     }
     
+    private double getPopAvgFitness(){
+        ArrayList<Double> fitnesses = new ArrayList<>();
+        for(DNA d : pop){
+            fitnesses.add(d.getFitness());
+        }
+        
+        return fitnesses.stream().mapToDouble(v -> v).average().getAsDouble();
+    }
+    
     private ArrayList<DNA> createMatingPool(){
 
         matingPool = new ArrayList();
-
+        double avgFit = getPopAvgFitness();
         for (DNA dna : pop) {
-            double fit = dna.getFitness() * (100 / this.getSuperDNA().getFitness());
-            fit =(int) Math.floor(fit) ;
+            double fit = dna.getFitness() * (10 / this.getSuperDNA().getFitness());
+            fit =(int) Math.floor(fit);
+            if (dna.getFitness() <= avgFit) {
+                fit= 0;
+            }
             for (int i = 0; i < fit; i++) {
                 matingPool.add(dna);
             }
@@ -84,6 +97,9 @@ public class Population {
         info.append("\n");
         info.append("Population Number: ");
         info.append(pop.size());
+        info.append("\n");
+        info.append("Mating Pool Size: ");
+        info.append(matingPool.size());
         info.append("\n");
         info.append("Mutation Rate (%): ");
         info.append(DNA.MUTATE_RATE * 100);
